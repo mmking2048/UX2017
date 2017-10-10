@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace UX2017.Models.ProfileAndFinancialData
+﻿namespace UX2017.Models.ProfileAndFinancialData
 {
     public class FinancialRatio
     {
