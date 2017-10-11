@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace UX2017.Models.ProfileAndFinancialData
 {
-    public class Profiles
-    {
-        public Status Status { get; set; }
-        public IEnumerable<Profile> Results { get; set; }
-    }
-
     public class Profile
     {
         public string Symbol { get; set; }

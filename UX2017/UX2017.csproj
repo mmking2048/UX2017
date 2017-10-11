@@ -155,7 +155,7 @@
     <Compile Include="Models\ProfileAndFinancialData\Profile.cs" />
     <Compile Include="Models\SplitsDividendsAndEarnings\CorporateAction.cs" />
     <Compile Include="Models\SplitsDividendsAndEarnings\EarningsEstimate.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Output.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\RestClient.cs" />
   </ItemGroup>
