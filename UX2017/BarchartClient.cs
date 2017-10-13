@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using UX2017.Models;
 using UX2017.Models.ProfileAndFinancialData;
 using UX2017.Models.SplitsDividendsAndEarnings;
 
-namespace UX2017.Utilities
+namespace UX2017
 {
-    public class RestClient
+    public class BarchartClient
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonParser _jsonParser;
         private readonly string _apiKey = "barcharthackathon";
         private readonly string _baseUrl = "http://ondemand.websol.barchart.com/";
 
-        public RestClient(HttpClient httpClient)
+        public BarchartClient(HttpClient httpClient, JsonParser jsonParser)
         {
             _httpClient = httpClient;
+            _jsonParser = jsonParser;
         }
 
         #region ProfileAndFinancialData
@@ -32,7 +31,7 @@ namespace UX2017.Utilities
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}":"")}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<Profile>>(json).Results;
+            return _jsonParser.Parse<Profile>(json);
         }
 
         public async Task<IEnumerable<FinancialHighlight>> GetFinancialHighlights(
@@ -43,7 +42,7 @@ namespace UX2017.Utilities
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<FinancialHighlight>>(json).Results;
+            return _jsonParser.Parse<FinancialHighlight>(json);
         }
 
         public async Task<IEnumerable<FinancialRatio>> GetFinancialRatios(
@@ -54,7 +53,7 @@ namespace UX2017.Utilities
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<FinancialRatio>>(json).Results;
+            return _jsonParser.Parse<FinancialRatio>(json);
         }
 
         public async Task<IEnumerable<IncomeStatement>> GetIncomeStatements(
@@ -69,7 +68,7 @@ namespace UX2017.Utilities
                       $"&count={count}" +
                       $"&rawData={rawData}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<IncomeStatement>>(json).Results;
+            return _jsonParser.Parse<IncomeStatement>(json);
         }
 
         public async Task<IEnumerable<BalanceSheet>> GetBalanceSheets(
@@ -84,7 +83,7 @@ namespace UX2017.Utilities
                       $"&count={count}" +
                       $"&rawData={rawData}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<BalanceSheet>>(json).Results;
+            return _jsonParser.Parse<BalanceSheet>(json);
         }
 
         public async Task<IEnumerable<Competitor>> GetCompetitors(
@@ -97,7 +96,7 @@ namespace UX2017.Utilities
                       $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}" +
                       $"&maxRecords={maxRecords}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<Competitor>>(json).Results;
+            return _jsonParser.Parse<Competitor>(json);
         }
 
         public async Task<IEnumerable<IndexMember>> GetIndexMembers(
@@ -108,7 +107,7 @@ namespace UX2017.Utilities
                       $"&symbol=${symbol}" +
                       $"{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<IndexMember>>(json).Results;
+            return _jsonParser.Parse<IndexMember>(json);
         }
 
         public async Task<IEnumerable<CashFlow>> GetCashFlow(
@@ -121,12 +120,11 @@ namespace UX2017.Utilities
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(!string.IsNullOrWhiteSpace(reportPeriod) ? $"&numberOfYears={numberOfYears}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<Output<CashFlow>>(json).Results;
+            return _jsonParser.Parse<CashFlow>(json);
         }
         #endregion
 
         #region SplitsDividendsAndEarnings
-
         public async Task<IEnumerable<CorporateAction>> GetCorporateActions(
             IEnumerable<string> symbols,
             DateTime? startDate,
@@ -134,7 +132,25 @@ namespace UX2017.Utilities
             EventType eventType,
             int maxRecords = 20)
         {
-            
+            var url = _baseUrl + $"getCorporateActions.json?apiKey={_apiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"{(startDate.HasValue ? $"startDate={startDate.Value.Date}" : "")}" +
+                      $"{(endDate.HasValue ? $"endDate={endDate.Value.Date}" : "")}" +
+                      $"&eventType={eventType}" +
+                      $"&maxRecords={maxRecords}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<CorporateAction>(json);
+        }
+
+        public async Task<IEnumerable<EarningsEstimate>> GetEarningsEstimates(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null)
+        {
+            var url = _baseUrl + $"getEarningsEstimates.json?apiKey={_apiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"&{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<EarningsEstimate>(json);
         }
         #endregion
     }
