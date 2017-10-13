@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UX2017.Models;
 using UX2017.Models.ProfileAndFinancialData;
 using UX2017.Models.SplitsDividendsAndEarnings;
