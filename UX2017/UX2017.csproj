@@ -155,9 +155,9 @@
     <Compile Include="Models\ProfileAndFinancialData\Profile.cs" />
     <Compile Include="Models\SplitsDividendsAndEarnings\CorporateAction.cs" />
     <Compile Include="Models\SplitsDividendsAndEarnings\EarningsEstimate.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\BarchartObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\RestClient.cs" />
+    <Compile Include="BarchartClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
