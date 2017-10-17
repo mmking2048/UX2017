@@ -4,7 +4,12 @@ using UX2017.Models;
 
 namespace UX2017
 {
-    public class JsonParser
+    public interface IJsonParser
+    {
+        IEnumerable<T> Parse<T>(string json);
+    }
+
+    public class JsonParser : IJsonParser
     {
         public IEnumerable<T> Parse<T>(string json)
         {

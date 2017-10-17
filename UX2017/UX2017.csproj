@@ -145,7 +145,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="JsonParser.cs" />
+    <Compile Include="IJsonParser.cs" />
     <Compile Include="Models\ProfileAndFinancialData\BalanceSheet.cs" />
     <Compile Include="Models\ProfileAndFinancialData\CashFlow.cs" />
     <Compile Include="Models\ProfileAndFinancialData\Competitor.cs" />
@@ -157,9 +157,9 @@
     <Compile Include="Models\SplitsDividendsAndEarnings\CorporateAction.cs" />
     <Compile Include="Models\SplitsDividendsAndEarnings\EarningsEstimate.cs" />
     <Compile Include="Models\BarchartObjects.cs" />
-    <Compile Include="NewsGenerator.cs" />
+    <Compile Include="INewsGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BarchartClient.cs" />
+    <Compile Include="IBarchartClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

@@ -8,7 +8,67 @@ using UX2017.Models.SplitsDividendsAndEarnings;
 
 namespace UX2017
 {
-    public class BarchartClient
+    public interface IBarchartClient
+    {
+        #region ProfileAndFinancialData
+
+        Task<IEnumerable<Profile>> GetProfile(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null);
+
+        Task<IEnumerable<FinancialHighlight>> GetFinancialHighlights(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null);
+
+        Task<IEnumerable<FinancialRatio>> GetFinancialRatios(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null);
+
+        Task<IEnumerable<IncomeStatement>> GetIncomeStatements(
+            IEnumerable<string> symbols,
+            Frequency frequency,
+            int count = 1,
+            int rawData = 0);
+
+        Task<IEnumerable<BalanceSheet>> GetBalanceSheets(
+            IEnumerable<string> symbols,
+            Frequency frequency,
+            int count = 1,
+            int rawData = 0);
+
+        Task<IEnumerable<Competitor>> GetCompetitors(
+            string symbol,
+            IEnumerable<string> fields = null,
+            int maxRecords = 10);
+
+        Task<IEnumerable<IndexMember>> GetIndexMembers(
+            IndexSymbol symbol,
+            IEnumerable<string> fields = null);
+
+        Task<IEnumerable<CashFlow>> GetCashFlow(
+            IEnumerable<string> symbols,
+            string reportPeriod = "",
+            IEnumerable<string> fields = null,
+            int numberOfYears = 4);
+        #endregion
+
+        #region SplitsDividendsAndEarnings
+
+        Task<IEnumerable<CorporateAction>> GetCorporateActions(
+            IEnumerable<string> symbols,
+            DateTime? startDate,
+            DateTime? endDate,
+            EventType eventType,
+            int maxRecords = 20);
+
+        Task<IEnumerable<EarningsEstimate>> GetEarningsEstimates(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null);
+
+        #endregion
+    }
+
+    public class BarchartClient : IBarchartClient
     {
         private readonly HttpClient _httpClient;
         private readonly JsonParser _jsonParser;
