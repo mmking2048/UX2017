@@ -1,7 +1,6 @@
-﻿@{
+﻿@using UX2017.Controllers
+@{
     ViewBag.Title = "Home Page";
 }
 
-<h1>@ViewBag.News.Headline</h1>
-
-<div>@ViewBag.News.Body</div>
+@Html.ActionLink("Get News", "Index", "News")
