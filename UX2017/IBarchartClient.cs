@@ -150,7 +150,7 @@ namespace UX2017
             IEnumerable<string> fields = null,
             int maxRecords = 10)
         {
-            var url = _baseUrl + $"getCompetitors.json?apiKey={_apiKey}" +
+            var url = _baseUrl + $"getCompetitors.json?apikey={_apiKey}" +
                       $"&symbol={symbol}" +
                       $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}" +
                       $"&maxRecords={maxRecords}";
@@ -162,7 +162,7 @@ namespace UX2017
             IndexSymbol symbol,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getIndexMembers.json?apiKey={_apiKey}" +
+            var url = _baseUrl + $"getIndexMembers.json?apikey={_apiKey}" +
                       $"&symbol=${symbol}" +
                       $"{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -175,7 +175,7 @@ namespace UX2017
             IEnumerable<string> fields = null,
             int numberOfYears = 4)
         {
-            var url = _baseUrl + $"getCashFlow.json?apiKey={_apiKey}" +
+            var url = _baseUrl + $"getCashFlow.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(!string.IsNullOrWhiteSpace(reportPeriod) ? $"&numberOfYears={numberOfYears}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -191,7 +191,7 @@ namespace UX2017
             EventType eventType,
             int maxRecords = 20)
         {
-            var url = _baseUrl + $"getCorporateActions.json?apiKey={_apiKey}" +
+            var url = _baseUrl + $"getCorporateActions.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(startDate.HasValue ? $"startDate={startDate.Value.Date}" : "")}" +
                       $"{(endDate.HasValue ? $"endDate={endDate.Value.Date}" : "")}" +
@@ -205,7 +205,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getEarningsEstimates.json?apiKey={_apiKey}" +
+            var url = _baseUrl + $"getEarningsEstimates.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);

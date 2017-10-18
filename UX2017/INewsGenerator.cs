@@ -5,7 +5,7 @@
         string GetEarningsNews();
     }
 
-    public class NewsGenerator
+    public class NewsGenerator : INewsGenerator
     {
         public string GetEarningsNews()
         {
