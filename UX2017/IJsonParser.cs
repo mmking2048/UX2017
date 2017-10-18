@@ -16,6 +16,8 @@ namespace UX2017
             var output = JsonConvert.DeserializeObject<Output<T>>(json);
             if (output.Status.Code == 200)
                 return output.Results;
+
+            // TODO: error handling
             return null;
         }
     }

@@ -1,15 +1,21 @@
-﻿namespace UX2017
+﻿using UX2017.Models;
+
+namespace UX2017
 {
     public interface INewsGenerator
     {
-        string GetEarningsNews();
+        News GetEarningsNews();
     }
 
     public class NewsGenerator : INewsGenerator
     {
-        public string GetEarningsNews()
+        public News GetEarningsNews()
         {
-            return "Beep";
+            return new News
+            {
+                Headline = "Beepers",
+                Body = "New tree found"
+            };
         }
     }
 }

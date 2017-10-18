@@ -4,22 +4,11 @@ namespace UX2017.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly INewsGenerator _generator = new NewsGenerator();
+
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.News = _generator.GetEarningsNews();
             return View();
         }
     }
