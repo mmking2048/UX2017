@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UX2017.Models;
@@ -12,7 +13,14 @@ namespace UX2017
     {
         #region ProfileAndFinancialData
 
-        Task<IEnumerable<Profile>> GetProfile(
+        Task<Profile> GetProfiles(string symbol);
+        Task<FinancialHighlight> GetFinancialHighlights(string symbol);
+        Task<FinancialRatio> GetFinancialRatios(string symbol);
+        Task<IncomeStatement> GetIncomeStatements(string symbol, Frequency frequency);
+        Task<BalanceSheet> GetBalanceSheets(string symbol, Frequency frequency);
+        Task<CashFlow> GetCashFlows(string symbol);
+
+        Task<IEnumerable<Profile>> GetProfiles(
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null);
 
@@ -45,7 +53,7 @@ namespace UX2017
             IndexSymbol symbol,
             IEnumerable<string> fields = null);
 
-        Task<IEnumerable<CashFlow>> GetCashFlow(
+        Task<IEnumerable<CashFlow>> GetCashFlows(
             IEnumerable<string> symbols,
             string reportPeriod = "",
             IEnumerable<string> fields = null,
@@ -53,6 +61,9 @@ namespace UX2017
         #endregion
 
         #region SplitsDividendsAndEarnings
+
+        Task<CorporateAction> GetCorporateActions(string symbol, EventType eventType);
+        Task<EarningsEstimate> GetEarningsEstimates(string symbol);
 
         Task<IEnumerable<CorporateAction>> GetCorporateActions(
             IEnumerable<string> symbols,
@@ -82,7 +93,38 @@ namespace UX2017
         }
 
         #region ProfileAndFinancialData
-        public async Task<IEnumerable<Profile>> GetProfile(
+
+        public async Task<Profile> GetProfiles(string symbol)
+        {
+            return (await GetProfiles(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<FinancialHighlight> GetFinancialHighlights(string symbol)
+        {
+            return (await GetFinancialHighlights(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<FinancialRatio> GetFinancialRatios(string symbol)
+        {
+            return (await GetFinancialRatios(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<IncomeStatement> GetIncomeStatements(string symbol, Frequency frequency)
+        {
+            return (await GetIncomeStatements(new[] {symbol}, frequency)).ElementAt(0);
+        }
+
+        public async Task<BalanceSheet> GetBalanceSheets(string symbol, Frequency frequency)
+        {
+            return (await GetBalanceSheets(new[] {symbol}, frequency)).ElementAt(0);
+        }
+
+        public async Task<CashFlow> GetCashFlows(string symbol)
+        {
+            return (await GetCashFlows(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<IEnumerable<Profile>> GetProfiles(
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
@@ -108,7 +150,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + "getFinancialRatios.json?apikey={_apiKey}" +
+            var url = _baseUrl + $"getFinancialRatios.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -169,7 +211,7 @@ namespace UX2017
             return _jsonParser.Parse<IndexMember>(json);
         }
 
-        public async Task<IEnumerable<CashFlow>> GetCashFlow(
+        public async Task<IEnumerable<CashFlow>> GetCashFlows(
             IEnumerable<string> symbols,
             string reportPeriod = "",
             IEnumerable<string> fields = null,
@@ -184,6 +226,17 @@ namespace UX2017
         #endregion
 
         #region SplitsDividendsAndEarnings
+
+        public async Task<CorporateAction> GetCorporateActions(string symbol, EventType eventType)
+        {
+            return (await GetCorporateActions(new[] {symbol}, null, null, eventType)).ElementAt(0);
+        }
+
+        public async Task<EarningsEstimate> GetEarningsEstimates(string symbol)
+        {
+            return (await GetEarningsEstimates(new[] {symbol})).ElementAt(0);
+        }
+
         public async Task<IEnumerable<CorporateAction>> GetCorporateActions(
             IEnumerable<string> symbols,
             DateTime? startDate,
