@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
+﻿using Castle.Windsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UX2017;
 using UX2017.Models;

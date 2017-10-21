@@ -83,8 +83,8 @@ namespace UX2017
     {
         private readonly HttpClient _httpClient;
         private readonly IJsonParser _jsonParser;
-        private readonly string _apiKey = "barcharthackathon";
-        private readonly string _baseUrl = "http://ondemand.websol.barchart.com/";
+        private const string ApiKey = "barcharthackathon";
+        private const string BaseUrl = "http://ondemand.websol.barchart.com/";
 
         public BarchartClient(HttpClient httpClient, IJsonParser jsonParser)
         {
@@ -128,7 +128,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getProfile.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getProfile.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}":"")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -139,7 +139,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getFinancialHighlights.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getFinancialHighlights.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -150,7 +150,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getFinancialRatios.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getFinancialRatios.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -163,7 +163,7 @@ namespace UX2017
             int count = 1,
             int rawData = 0)
         {
-            var url = _baseUrl + $"getIncomeStatements.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getIncomeStatements.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&frequency={frequency}" +
                       $"&count={count}" +
@@ -178,7 +178,7 @@ namespace UX2017
             int count = 1,
             int rawData = 0)
         {
-            var url = _baseUrl + $"getBalanceSheets.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getBalanceSheets.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&frequency={frequency}" +
                       $"&count={count}" +
@@ -192,7 +192,7 @@ namespace UX2017
             IEnumerable<string> fields = null,
             int maxRecords = 10)
         {
-            var url = _baseUrl + $"getCompetitors.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getCompetitors.json?apikey={ApiKey}" +
                       $"&symbol={symbol}" +
                       $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}" +
                       $"&maxRecords={maxRecords}";
@@ -204,7 +204,7 @@ namespace UX2017
             IndexSymbol symbol,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getIndexMembers.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getIndexMembers.json?apikey={ApiKey}" +
                       $"&symbol=${symbol}" +
                       $"{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -217,7 +217,7 @@ namespace UX2017
             IEnumerable<string> fields = null,
             int numberOfYears = 4)
         {
-            var url = _baseUrl + $"getCashFlow.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getCashFlow.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(!string.IsNullOrWhiteSpace(reportPeriod) ? $"&numberOfYears={numberOfYears}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -244,7 +244,7 @@ namespace UX2017
             EventType eventType,
             int maxRecords = 20)
         {
-            var url = _baseUrl + $"getCorporateActions.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getCorporateActions.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(startDate.HasValue ? $"startDate={startDate.Value.Date}" : "")}" +
                       $"{(endDate.HasValue ? $"endDate={endDate.Value.Date}" : "")}" +
@@ -258,7 +258,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getEarningsEstimates.json?apikey={_apiKey}" +
+            var url = BaseUrl + $"getEarningsEstimates.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
