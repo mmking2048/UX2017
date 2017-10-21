@@ -68,6 +68,24 @@ namespace UX2017Tests
 
         #endregion
 
+        #region SplitsDividendsAndEarnings
+
+        [TestMethod]
+        public void GetCorporateActions()
+        {
+            var corporateAction = _barchartClient.GetCorporateActions(_symbol, EventType.dividend).Result;
+            Assert.AreEqual(corporateAction.Symbol, _symbol);
+        }
+
+        [TestMethod]
+        public void GetEarningsEstimates()
+        {
+            var earningsEstimate = _barchartClient.GetEarningsEstimates(_symbol).Result;
+            Assert.AreEqual(earningsEstimate.Symbol, _symbol);
+        }
+
+        #endregion
+
         [TestCleanup]
         public void TestCleanup()
         {

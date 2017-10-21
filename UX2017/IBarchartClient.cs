@@ -139,7 +139,7 @@ namespace UX2017
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null)
         {
-            var url = _baseUrl + $"getFinanicalHighlights.json?apikey={_apiKey}" +
+            var url = _baseUrl + $"getFinancialHighlights.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
@@ -163,7 +163,7 @@ namespace UX2017
             int count = 1,
             int rawData = 0)
         {
-            var url = _baseUrl + $"getFinanicalHighlights.json?apikey={_apiKey}" +
+            var url = _baseUrl + $"getIncomeStatements.json?apikey={_apiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"&frequency={frequency}" +
                       $"&count={count}" +

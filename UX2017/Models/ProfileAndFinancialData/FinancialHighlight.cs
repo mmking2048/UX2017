@@ -6,7 +6,7 @@
         public int MarketCapitalization { get; set; }
         public double InsiderShareholders { get; set; }
         public int AnnualRevenue { get; set; }
-        public int TtmRevenue { get; set; }
+        public long TtmRevenue { get; set; }
         public int SharesOutstanding { get; set; }
         public double InstitutionalShareholders { get; set; }
         public int? AnnualNetIncome { get; set; }

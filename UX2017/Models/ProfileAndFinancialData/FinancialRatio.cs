@@ -7,7 +7,7 @@
         public double ProfitMargin { get; set; }
         public double Roe { get; set; }
         public double Roa { get; set; }
-        public double PriceSales { get; set; }
+        public double? PriceSales { get; set; }
         public double PriceEarnings { get; set; }
         public double PriceBook { get; set; }
         public double? DebtEquity { get; set; }
