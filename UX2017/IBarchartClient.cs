@@ -71,11 +71,11 @@ namespace UX2017
     public class BarchartClient : IBarchartClient
     {
         private readonly HttpClient _httpClient;
-        private readonly JsonParser _jsonParser;
+        private readonly IJsonParser _jsonParser;
         private readonly string _apiKey = "barcharthackathon";
         private readonly string _baseUrl = "http://ondemand.websol.barchart.com/";
 
-        public BarchartClient(HttpClient httpClient, JsonParser jsonParser)
+        public BarchartClient(HttpClient httpClient, IJsonParser jsonParser)
         {
             _httpClient = httpClient;
             _jsonParser = jsonParser;

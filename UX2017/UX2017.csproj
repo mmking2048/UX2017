@@ -162,7 +162,7 @@
     <Compile Include="INewsGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IBarchartClient.cs" />
-    <Compile Include="WordGenerator.cs" />
+    <Compile Include="IWordGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
