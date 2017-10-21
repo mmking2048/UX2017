@@ -11,14 +11,18 @@ namespace UX2017.Controllers
     {
         private readonly IBarchartClient _barchartClient =
             new BarchartClient(new HttpClient(), new JsonParser());
-        private readonly INewsGenerator _generator =
-            new NewsGenerator(new BarchartClient(new HttpClient(), new JsonParser()),
-                              new WordGenerator(new Random()));
 
         public async Task<ActionResult> Index()
         {
             var news = (await _barchartClient.GetNews("AAPL")).ElementAt(0);
-            ViewBag.News = new NewsArticle(news.Headline, news.FullText);
+            ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
+            return View("News");
+        }
+
+        public async Task<ActionResult> News(int newsID)
+        {
+            var news = await _barchartClient.GetNews(newsID);
+            ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
             return View("News");
         }
     }

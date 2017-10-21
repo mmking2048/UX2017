@@ -15,6 +15,8 @@ namespace UX2017
     {
         #region NewsAndFilings
 
+        Task<News> GetNews(int storyID);
+
         Task<IEnumerable<News>> GetNews(string symbol);
 
         Task<IEnumerable<News>> GetNews(
@@ -126,9 +128,14 @@ namespace UX2017
 
         #region NewsAndFilings
 
+        public async Task<News> GetNews(int storyID)
+        {
+            return (await GetNews(new[] { "AP" }, storyID: storyID, fields: new[] { "largeImageURL" })).ElementAt(0);
+        }
+
         public async Task<IEnumerable<News>> GetNews(string symbol)
         {
-            return await GetNews(new[] {"AP"}, new[] {symbol});
+            return await GetNews(new[] {"AP"}, new[] {symbol}, fields: new[] {"largeImageURL"});
         }
 
         public async Task<IEnumerable<News>> GetNews(
@@ -149,15 +156,15 @@ namespace UX2017
                       $"&sources={string.Join(",", sources)}" +
                       $"{(symbols != null ? $"&symbols={string.Join(",", symbols)}" : "")}" +
                       $"{(category != Category.None ? $"category={category}" : "")}" +
-                      $"{(!string.IsNullOrWhiteSpace(keyword) ? $"keyword={keyword}" : "")}" +
+                      $"{(!string.IsNullOrWhiteSpace(keyword) ? $"&keyword={keyword}" : "")}" +
                       $"&maxRecords={maxRecords}" +
-                      $"{(startDate.HasValue ? $"startDate={startDate.Value}" : "")}" +
+                      $"{(startDate.HasValue ? $"&startDate={startDate.Value}" : "")}" +
                       $"&displayType={displayType}" +
                       $"&images={images}" +
-                      $"{(storyID.HasValue ? $"$storyId={storyID.Value}" : "")}" +
+                      $"{(storyID.HasValue ? $"&storyId={storyID.Value}" : "")}" +
                       $"&rss={rss}" +
                       $"{(!string.IsNullOrWhiteSpace(rssTitle) ? $"&rssTitle={rssTitle}" : "")}" +
-                      $"{(fields != null ? string.Join(",", fields) : "")}";
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<News>(json);
         }

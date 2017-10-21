@@ -2,4 +2,20 @@
     ViewBag.Title = "Home Page";
 }
 
-@Html.ActionLink("Get News", "Index", "News")
+@using (Html.BeginForm("News"))
+{
+    @Html.Label("Symbol: ")
+    @Html.TextBox("symbol", "", new {@class="form-control"})
+    <input type="submit" value="Search" class="form-control"/>
+}
+
+<div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
+    @foreach (var article in ViewBag.NewsArticles)
+    {
+        <div style="margin: 15px; margin-bottom: 20px;">
+            
+            @Html.ActionLink((string)article.Headline, "News", "News", new { newsID = article.NewsID }, new { @class = "h4"})
+            <p>@article.Body</p>
+        </div>
+    }
+</div>

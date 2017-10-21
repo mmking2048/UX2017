@@ -2,6 +2,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>@ViewBag.News.Headline</h3>
+<div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
+    <h3>@ViewBag.News.Headline</h3>
 
-@Html.Raw(@ViewBag.News.Body)
+    <img src="@ViewBag.News.ImageUrl" style="margin: 10px;"/>
+
+    @Html.Raw(@ViewBag.News.Body)
+</div>
