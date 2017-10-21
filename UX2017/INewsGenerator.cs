@@ -21,7 +21,7 @@ namespace UX2017
 
         public async Task<News> GetEarningsNews(string symbol)
         {
-            var profile = (await _barchartClient.GetProfiles(symbol));
+            var profile = await _barchartClient.GetProfiles(symbol);
 
             var stockIncreased = true;
 

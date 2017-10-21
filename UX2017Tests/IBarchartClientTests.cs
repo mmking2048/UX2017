@@ -20,6 +20,17 @@ namespace UX2017Tests
             _barchartClient = _container.Resolve<IBarchartClient>();
         }
 
+        #region PriceData
+
+        [TestMethod]
+        public void GetQuoteEod()
+        {
+            var quoteEod = _barchartClient.GetQuoteEod(_symbol).Result;
+            Assert.AreEqual(quoteEod.Symbol, _symbol);
+        }
+
+        #endregion
+
         #region ProfileAndFinancialData
 
         [TestMethod]

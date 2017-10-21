@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UX2017.Models;
+using UX2017.Models.PriceData;
 using UX2017.Models.ProfileAndFinancialData;
 using UX2017.Models.SplitsDividendsAndEarnings;
 
@@ -11,6 +12,16 @@ namespace UX2017
 {
     public interface IBarchartClient
     {
+        #region PriceData
+
+        Task<QuoteEod> GetQuoteEod(string symbol);
+
+        Task<IEnumerable<QuoteEod>> GetQuoteEod(
+            IEnumerable<string> symbols,
+            IEnumerable<string> exchanges = null);
+
+        #endregion
+
         #region ProfileAndFinancialData
 
         Task<Profile> GetProfiles(string symbol);
@@ -92,6 +103,26 @@ namespace UX2017
             _jsonParser = jsonParser;
         }
 
+        #region PriceData
+
+        public async Task<QuoteEod> GetQuoteEod(string symbol)
+        {
+            return (await GetQuoteEod(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<IEnumerable<QuoteEod>> GetQuoteEod(
+            IEnumerable<string> symbols,
+            IEnumerable<string> exchanges = null)
+        {
+            var url = BaseUrl + $"getProfile.json?apikey={ApiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"{(exchanges != null ? $"&fields={string.Join(",", exchanges)}" : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<QuoteEod>(json);
+        }
+
+        #endregion
+
         #region ProfileAndFinancialData
 
         public async Task<Profile> GetProfiles(string symbol)
@@ -130,7 +161,7 @@ namespace UX2017
         {
             var url = BaseUrl + $"getProfile.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
-                      $"&{(fields != null ? $"&fields={string.Join(",", fields)}":"")}";
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}":"")}";
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<Profile>(json);
         }
@@ -141,7 +172,7 @@ namespace UX2017
         {
             var url = BaseUrl + $"getFinancialHighlights.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
-                      $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<FinancialHighlight>(json);
         }
@@ -152,7 +183,7 @@ namespace UX2017
         {
             var url = BaseUrl + $"getFinancialRatios.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
-                      $"&{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<FinancialRatio>(json);
         }

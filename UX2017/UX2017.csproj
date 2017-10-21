@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="IJsonParser.cs" />
     <Compile Include="Models\News.cs" />
+    <Compile Include="Models\PriceData\QuoteEod.cs" />
     <Compile Include="Models\ProfileAndFinancialData\BalanceSheet.cs" />
     <Compile Include="Models\ProfileAndFinancialData\CashFlow.cs" />
     <Compile Include="Models\ProfileAndFinancialData\Competitor.cs" />
