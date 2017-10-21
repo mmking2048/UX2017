@@ -48,4 +48,19 @@ namespace UX2017.Models
         dividend,
         earnings
     }
+
+    public enum Category
+    {
+        None,
+        stocks,
+        futures,
+        forex
+    }
+
+    public enum DisplayType
+    {
+        headline,
+        preview,
+        full
+    }
 }

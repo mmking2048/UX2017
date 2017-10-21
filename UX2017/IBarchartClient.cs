@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UX2017.Models;
+using UX2017.Models.NewsAndFilings;
 using UX2017.Models.PriceData;
 using UX2017.Models.ProfileAndFinancialData;
 using UX2017.Models.SplitsDividendsAndEarnings;
@@ -12,6 +13,26 @@ namespace UX2017
 {
     public interface IBarchartClient
     {
+        #region NewsAndFilings
+
+        Task<IEnumerable<News>> GetNews(string symbol);
+
+        Task<IEnumerable<News>> GetNews(
+            IEnumerable<string> sources,
+            IEnumerable<string> symbols = null,
+            Category category = Category.None,
+            string keyword = "",
+            int maxRecords = 30,
+            DateTime? startDate = null,
+            DisplayType displayType = DisplayType.full,
+            bool images = true,
+            int? storyID = null,
+            bool rss = false,
+            string rssTitle = "",
+            IEnumerable<string> fields = null);
+
+        #endregion
+
         #region PriceData
 
         Task<QuoteEod> GetQuoteEod(string symbol);
@@ -102,6 +123,46 @@ namespace UX2017
             _httpClient = httpClient;
             _jsonParser = jsonParser;
         }
+
+        #region NewsAndFilings
+
+        public async Task<IEnumerable<News>> GetNews(string symbol)
+        {
+            return await GetNews(new[] {"AP"}, new[] {symbol});
+        }
+
+        public async Task<IEnumerable<News>> GetNews(
+            IEnumerable<string> sources,
+            IEnumerable<string> symbols = null,
+            Category category = Category.None,
+            string keyword = "",
+            int maxRecords = 30,
+            DateTime? startDate = null,
+            DisplayType displayType = DisplayType.full,
+            bool images = true,
+            int? storyID = null,
+            bool rss = false,
+            string rssTitle = "",
+            IEnumerable<string> fields = null)
+        {
+            var url = BaseUrl + $"getNews.json?apikey={ApiKey}" +
+                      $"&sources={string.Join(",", sources)}" +
+                      $"{(symbols != null ? $"&symbols={string.Join(",", symbols)}" : "")}" +
+                      $"{(category != Category.None ? $"category={category}" : "")}" +
+                      $"{(!string.IsNullOrWhiteSpace(keyword) ? $"keyword={keyword}" : "")}" +
+                      $"&maxRecords={maxRecords}" +
+                      $"{(startDate.HasValue ? $"startDate={startDate.Value}" : "")}" +
+                      $"&displayType={displayType}" +
+                      $"&images={images}" +
+                      $"{(storyID.HasValue ? $"$storyId={storyID.Value}" : "")}" +
+                      $"&rss={rss}" +
+                      $"{(!string.IsNullOrWhiteSpace(rssTitle) ? $"&rssTitle={rssTitle}" : "")}" +
+                      $"{(fields != null ? string.Join(",", fields) : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<News>(json);
+        }
+
+        #endregion
 
         #region PriceData
 
