@@ -28,13 +28,13 @@ namespace UX2017.Controllers
             return View("News");
         }
 
-        public async Task<ActionResult> EarningsNews(string symbol)
+        public async Task<ActionResult> EarningsNews(string symbol = "AAPL")
         {
             ViewBag.News = await _newsGenerator.GetEarningsSummary(symbol);
             return View("News");
         }
 
-        public async Task<ActionResult> DividendsAnnouncement(string symbol)
+        public async Task<ActionResult> DividendsAnnouncement(string symbol = "AAPL")
         {
             ViewBag.News = await _newsGenerator.GetDividendAnnouncement(symbol);
             return View("News");
