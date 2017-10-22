@@ -2,11 +2,11 @@
     ViewBag.Title = "Home Page";
 }
 
-@using (Html.BeginForm("News"))
+@using (Html.BeginForm("News", "Home"))
 {
-    @Html.Label("Symbol: ")
-    @Html.TextBox("symbol", "", new {@class="form-control"})
-    <input type="submit" value="Search" class="form-control"/>
+    @Html.Label("Symbol: ", new {style="float: left;"})
+    @Html.TextBox("symbol", "", new {@class="form-control", style="float: left;"})
+    <input type="submit" value="Search" style="float: left;" />
 }
 
 <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
