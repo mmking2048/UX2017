@@ -9,7 +9,7 @@ namespace UX2017.Controllers
 {
     public class NewsController : Controller
     {
-        private readonly IEnumerable<string> _symbols = new []{"AAPL", "GOOGL", "MSFT", "AMZN"};
+        private readonly IEnumerable<string> _symbols = new []{"AAPL", "GOOGL", "MSFT", "IBM"};
         private readonly IBarchartClient _barchartClient =
             new BarchartClient(new HttpClient(), new JsonParser());
         private readonly INewsGenerator _newsGenerator =
@@ -26,9 +26,10 @@ namespace UX2017.Controllers
         public async Task<ActionResult> News(int newsID)
         {
             var news = await _barchartClient.GetNews(newsID);
-            ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
+            var article = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
+            ViewBag.News = article;
             ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
-            ViewBag.NewsArticles = (await _barchartClient.GetNews("AAPL"))
+            ViewBag.NewsArticles = (await _barchartClient.GetNews(GetSymbol(article)))
                 .Where(n => n.NewsID != newsID)
                 .Take(3)
                 .Select(n => new NewsArticle(n.NewsID, n.Headline, n.Preview));
@@ -47,6 +48,27 @@ namespace UX2017.Controllers
             ViewBag.News = await _newsGenerator.GetDividendAnnouncement(symbol);
             ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
             return View("News");
+        }
+
+        private string GetSymbol(NewsArticle news)
+        {
+            foreach (var symbol in _symbols)
+            {
+                if (news.Headline.Contains(symbol))
+                {
+                    return symbol;
+                }
+            }
+
+            foreach (var symbol in _symbols)
+            {
+                if (news.Body.Contains(symbol))
+                {
+                    return symbol;
+                }
+            }
+
+            return "AAPL";
         }
     }
 }

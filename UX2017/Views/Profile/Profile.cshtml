@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <div id="symbol">@ViewBag.Profile.ExchangeName (@ViewBag.Profile.Symbol)</div>
+            <div id="price">@ViewBag.Quote.LastPrice</div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <img src="@ViewBag.Chart.ImageUrl" />
+        </div>
+    </div>
+    
+    <div class="row" id="profile-info">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab-keydata" data-toggle="tab">Key Data</a>
+            </li>
+            <li>
+                <a href="#tab-profile" data-toggle="tab">Profile</a>
+            </li>
+            <li>
+                <a href="#tab-news" data-toggle="tab">News</a>
+            </li>
+            <li>
+                <a href="#tab-technical" data-toggle="tab">Technical</a>
+            </li>
+            <li>
+                <a href="#tab-earnings" data-toggle="tab">Earnings</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-keydata">
+                <p>
+                    Key data
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tab-profile">
+                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
+                    <h4>Company summary</h4>
+                    @Html.Raw(ViewBag.Profile.BusinessSummary)
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-news">
+                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
+                    @if (ViewBag.NewsArticles != null)
+                    {
+                        foreach (var article in ViewBag.NewsArticles)
+                        {
+                            <div style="margin: 15px; margin-bottom: 20px;">
+            
+                                @Html.ActionLink((string)article.Headline, "News", "News", new { newsID = article.NewsID }, new { @class = "h4"})
+                                <p>@article.Body</p>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-technical">
+                <p>
+                    Technical
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tab-earnings">
+                <p>
+                    Earnings
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
