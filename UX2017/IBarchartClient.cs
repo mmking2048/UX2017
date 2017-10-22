@@ -38,7 +38,14 @@ namespace UX2017
 
         #region PriceData
 
+        Task<Quote> GetQuote(string symbol);
+        Task<IEnumerable<Quote>> GetQuote(IEnumerable<string> symbols);
         Task<QuoteEod> GetQuoteEod(string symbol);
+
+        Task<IEnumerable<Quote>> GetQuote(
+            IEnumerable<string> symbols,
+            IEnumerable<string> mode,
+            IEnumerable<string> fields = null);
 
         Task<IEnumerable<QuoteEod>> GetQuoteEod(
             IEnumerable<string> symbols,
@@ -191,16 +198,39 @@ namespace UX2017
 
         #region PriceData
 
+        public async Task<Quote> GetQuote(string symbol)
+        {
+            return (await GetQuote(new[] {symbol}, new[] {"R"})).ElementAt(0);
+        }
+
+        public async Task<IEnumerable<Quote>> GetQuote(IEnumerable<string> symbols)
+        {
+            return await GetQuote(symbols, new[] {"R"});
+        }
+
         public async Task<QuoteEod> GetQuoteEod(string symbol)
         {
             return (await GetQuoteEod(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<IEnumerable<Quote>> GetQuote(
+            IEnumerable<string> symbols,
+            IEnumerable<string> mode,
+            IEnumerable<string> fields = null)
+        {
+            var url = BaseUrl + $"getQuote.json?apikey={ApiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"&mode={string.Join(",", mode)}" +
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<Quote>(json);
         }
 
         public async Task<IEnumerable<QuoteEod>> GetQuoteEod(
             IEnumerable<string> symbols,
             IEnumerable<string> exchanges = null)
         {
-            var url = BaseUrl + $"getProfile.json?apikey={ApiKey}" +
+            var url = BaseUrl + $"getQuoteEod.json?apikey={ApiKey}" +
                       $"&symbols={string.Join(",", symbols)}" +
                       $"{(exchanges != null ? $"&fields={string.Join(",", exchanges)}" : "")}";
             var json = await _httpClient.GetStringAsync(url);

@@ -2,10 +2,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
-    <h3>@ViewBag.News.Headline</h3>
+<div class="container">
+    <br/>
+    <div id="related-companies" class="col-md-3 col-lg-3" style="margin-top: 70px;">
+        @Html.Partial("RelatedStocks")
+    </div>
 
-    <img src="@ViewBag.News.ImageUrl" style="margin: 10px;"/><br/>
+    <div id="news-stuff" class="col-md-8 col-lg-8">
+        <div id="news">
+            <h3>@ViewBag.News.Headline</h3>
 
-    @Html.Raw(@ViewBag.News.Body)
+            <img src="@ViewBag.News.ImageUrl" style="margin: 10px;"/><br/>
+
+            @Html.Raw(ViewBag.News.Body)
+        </div>
+        <div id="related-topics"></div>
+    </div>
 </div>

@@ -23,6 +23,13 @@ namespace UX2017Tests
         #region PriceData
 
         [TestMethod]
+        public void GetQuote()
+        {
+            var quote = _barchartClient.GetQuote(_symbol).Result;
+            Assert.AreEqual(quote.Symbol, _symbol);
+        }
+
+        [TestMethod]
         public void GetQuoteEod()
         {
             var quoteEod = _barchartClient.GetQuoteEod(_symbol).Result;

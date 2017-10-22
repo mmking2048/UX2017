@@ -150,6 +150,7 @@
     <Compile Include="Models\ChartsAndAnalytics\Chart.cs" />
     <Compile Include="Models\NewsAndFilings\News.cs" />
     <Compile Include="Models\NewsArticle.cs" />
+    <Compile Include="Models\PriceData\Quote.cs" />
     <Compile Include="Models\PriceData\QuoteEod.cs" />
     <Compile Include="Models\ProfileAndFinancialData\BalanceSheet.cs" />
     <Compile Include="Models\ProfileAndFinancialData\CashFlow.cs" />
@@ -206,6 +207,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\News\News.cshtml" />
+    <Content Include="Views\News\RelatedStocks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

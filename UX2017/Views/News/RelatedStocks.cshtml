@@ -1,0 +1,17 @@
+﻿<div class="row">
+    <div class="col-md-3 col-lg-3"><b>Symbol</b></div>
+    <div class="col-md-3 col-lg-3"><b>Net Change</b></div>
+    <div class="col-md-3 col-lg-3"><b>% Change</b></div>
+</div>
+
+@if (ViewBag.RelatedStocks != null)
+{
+    foreach (var stock in ViewBag.RelatedStocks)
+    {
+        <div class="row">
+            <div class="col-md-3 col-lg-3">@stock.Symbol</div>
+            <div class="col-md-3 col-lg-3 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">@stock.NetChange</div>
+            <div class="col-md-3 col-lg-3 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">@stock.PercentChange</div>
+        </div>
+    }
+}
