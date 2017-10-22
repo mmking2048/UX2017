@@ -4,13 +4,21 @@
 
 <br/><br/>
 
+@{
+    bool priceIncrease = ViewBag.Quote.NetChange > 0;
+    bool priceDecrease = ViewBag.Quote.NetChange < 0;
+}
+
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-lg-6">
             <h3 id="symbol">@ViewBag.Profile.ExchangeName (@ViewBag.Profile.Symbol)</h3>
             <div class="row">
-                <h1 id="price">@ViewBag.Quote.LastPrice</h1>
-                <h3>@string.Format("{0:n2}",ViewBag.Quote.NetChange) (@string.Format("{0:n2}", ViewBag.Quote.PercentChange)%)</h3>
+                <h1 class="col-md-3 col-lg-3" id="price"><b>@ViewBag.Quote.LastPrice</b></h1>
+                <h3 class="col-md-9 col-lg-9 @(priceIncrease ? "green" : priceDecrease ? "red" : "")" style="margin-top: 30px;">
+                    @(priceIncrease ? "+" : "")@string.Format("{0:n2}", ViewBag.Quote.NetChange) 
+                    (@(priceIncrease ? "+" : "")@string.Format("{0:n2}", ViewBag.Quote.PercentChange)%)
+                </h3>
             </div>
         </div>
         <div class="col-md-6 col-lg-6">
@@ -28,9 +36,6 @@
             </li>
             <li>
                 <a href="#tab-news" data-toggle="tab">News</a>
-            </li>
-            <li>
-                <a href="#tab-technical" data-toggle="tab">Technical</a>
             </li>
             <li>
                 <a href="#tab-earnings" data-toggle="tab">Earnings</a>
@@ -61,11 +66,6 @@
                             </div>
                         }
                     }
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tab-technical">
-                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
-                    Technical
                 </div>
             </div>
             <div class="tab-pane fade" id="tab-earnings">
