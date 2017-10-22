@@ -17,7 +17,18 @@
             @Html.Raw(ViewBag.News.Body)
         </div>
         <div id="related-topics">
+            @if (ViewBag.NewsArticles != null)
+            {
+                <h3>Related topics:</h3>
+                foreach (var article in ViewBag.NewsArticles)
+                {
+                    <div style="margin-bottom: 20px;">
             
+                        @Html.ActionLink((string)article.Headline, "News", "News", new { newsID = article.NewsID }, new { @class = "h4"})
+                        <p>@article.Body</p>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

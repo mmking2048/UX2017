@@ -19,6 +19,7 @@ namespace UX2017
         Task<News> GetNews(int storyID);
 
         Task<IEnumerable<News>> GetNews(string symbol);
+        Task<IEnumerable<News>> GetNews(IEnumerable<string> symbol);
 
         Task<IEnumerable<News>> GetNews(
             IEnumerable<string> sources,
@@ -161,6 +162,11 @@ namespace UX2017
         public async Task<IEnumerable<News>> GetNews(string symbol)
         {
             return await GetNews(new[] {"AP"}, new[] {symbol}, fields: new[] {"largeImageURL"});
+        }
+
+        public async Task<IEnumerable<News>> GetNews(IEnumerable<string> symbol)
+        {
+            return await GetNews(new[] { "AP" }, symbol, fields: new[] { "largeImageURL" });
         }
 
         public async Task<IEnumerable<News>> GetNews(

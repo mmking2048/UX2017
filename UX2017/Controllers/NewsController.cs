@@ -28,6 +28,10 @@ namespace UX2017.Controllers
             var news = await _barchartClient.GetNews(newsID);
             ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
             ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
+            ViewBag.NewsArticles = (await _barchartClient.GetNews("AAPL"))
+                .Where(n => n.NewsID != newsID)
+                .Take(3)
+                .Select(n => new NewsArticle(n.NewsID, n.Headline, n.Preview));
             return View("News");
         }
 
