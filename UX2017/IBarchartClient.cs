@@ -393,8 +393,8 @@ namespace UX2017
         public async Task<IEnumerable<Chart>> GetChart(
             IEnumerable<string> symbols,
             ChartType type = ChartType.LINE,
-            int width = 700,
-            int height = 550,
+            int width = 400,
+            int height = 300,
             bool volume = false,
             string period = "1d",
             string interval = "",

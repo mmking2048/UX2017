@@ -11,6 +11,8 @@ namespace UX2017.Controllers
     {
         private readonly IBarchartClient _barchartClient =
             new BarchartClient(new HttpClient(), new JsonParser());
+        private readonly INewsGenerator _newsGenerator =
+            new NewsGenerator(new BarchartClient(new HttpClient(), new JsonParser()));
 
         public async Task<ActionResult> Index()
         {
@@ -23,6 +25,18 @@ namespace UX2017.Controllers
         {
             var news = await _barchartClient.GetNews(newsID);
             ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
+            return View("News");
+        }
+
+        public async Task<ActionResult> EarningsNews(string symbol)
+        {
+            ViewBag.News = await _newsGenerator.GetEarningsSummary(symbol);
+            return View("News");
+        }
+
+        public async Task<ActionResult> DividendsAnnouncement(string symbol)
+        {
+            ViewBag.News = await _newsGenerator.GetDividendAnnouncement(symbol);
             return View("News");
         }
     }

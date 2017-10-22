@@ -7,6 +7,9 @@ namespace UX2017.Models
 {
     public class NewsArticle
     {
+        public NewsArticle(string headline, string body, string imageUrl = "")
+            : this(0, headline, body, imageUrl) { }
+
         public NewsArticle(int newsID, string headline, string body, string imageUrl = "")
         {
             NewsID = newsID;
