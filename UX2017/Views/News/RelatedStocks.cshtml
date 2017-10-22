@@ -11,13 +11,15 @@
     foreach (var stock in ViewBag.RelatedStocks)
     {
         <div class="row">
-            <div class="col-md-4 col-lg-4">@stock.Symbol</div>
+            <div class="col-md-4 col-lg-4">
+                @Html.ActionLink((string)stock.Symbol, "GetProfile", "Profile", new { symbol = stock.Symbol }, new{})
+            </div>
             <div class="col-md-4 col-lg-4 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">
-                @stock.NetChange
+                @string.Format("{0:n2}", stock.NetChange)
                 <span class="glyphicon @(stock.NetChange > 0 ? "glyphicon-triangle-top" : stock.NetChange < 0 ? "glyphicon-triangle-bottom" : "")"></span>
             </div>
             <div class="col-md-4 col-lg-4 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">
-                @stock.PercentChange
+                @string.Format("{0:n2}", stock.PercentChange)%
                 <span class="glyphicon @(stock.NetChange > 0 ? "glyphicon-triangle-top" : stock.NetChange < 0 ? "glyphicon-triangle-bottom" : "")"></span>
             </div>
         </div>
