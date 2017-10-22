@@ -15,7 +15,7 @@ namespace UX2017.Models.ProfileAndFinancialData
         public IEnumerable<string> IndexMembership { get; set; }
         public string BusinessSummary { get; set; }
         public string Ceo { get; set; }
-        public double QtrOneEarnings { get; set; }
+        public double? QtrOneEarnings { get; set; }
         public DateTime? QtrOneEarningsDate { get; set; }
         public double? QtrTwoEarnings { get; set; }
         public DateTime? QtrTwoEarningsDate { get; set; }
