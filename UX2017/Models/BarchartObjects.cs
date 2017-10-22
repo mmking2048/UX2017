@@ -63,4 +63,12 @@ namespace UX2017.Models
         preview,
         full
     }
+
+    public enum ChartType
+    {
+        BAR,
+        LINE,
+        CANDLE,
+        AREA
+    }
 }

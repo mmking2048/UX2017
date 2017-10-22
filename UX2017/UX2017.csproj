@@ -147,6 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="IJsonParser.cs" />
+    <Compile Include="Models\ChartsAndAnalytics\Chart.cs" />
     <Compile Include="Models\NewsAndFilings\News.cs" />
     <Compile Include="Models\NewsArticle.cs" />
     <Compile Include="Models\PriceData\QuoteEod.cs" />

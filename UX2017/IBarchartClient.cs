@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UX2017.Models;
+using UX2017.Models.ChartsAndAnalytics;
 using UX2017.Models.NewsAndFilings;
 using UX2017.Models.PriceData;
 using UX2017.Models.ProfileAndFinancialData;
@@ -109,6 +110,23 @@ namespace UX2017
         Task<IEnumerable<EarningsEstimate>> GetEarningsEstimates(
             IEnumerable<string> symbols,
             IEnumerable<string> fields = null);
+
+        #endregion
+
+        #region ChartsAndAnalytics
+
+        Task<Chart> GetChart(string symbol);
+
+        Task<IEnumerable<Chart>> GetChart(
+            IEnumerable<string> symbols,
+            ChartType type = ChartType.LINE,
+            int width = 700,
+            int height = 550,
+            bool volume = false,
+            string period = "1d",
+            string interval = "",
+            IEnumerable<string> indicators = null,
+            string frequencyType = "");
 
         #endregion
     }
@@ -363,6 +381,40 @@ namespace UX2017
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<EarningsEstimate>(json);
         }
+        #endregion
+
+        #region ChartsAndAnalytics
+
+        public async Task<Chart> GetChart(string symbol)
+        {
+            return (await GetChart(new[] {symbol})).ElementAt(0);
+        }
+
+        public async Task<IEnumerable<Chart>> GetChart(
+            IEnumerable<string> symbols,
+            ChartType type = ChartType.LINE,
+            int width = 700,
+            int height = 550,
+            bool volume = false,
+            string period = "1d",
+            string interval = "",
+            IEnumerable<string> indicators = null,
+            string frequencyType = "")
+        {
+            var url = BaseUrl + $"getChart.json?apikey={ApiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"&type={type}" +
+                      $"&width={width}" +
+                      $"&height={height}" +
+                      $"&volume={volume}" +
+                      $"&period={period}" +
+                      $"{(!string.IsNullOrWhiteSpace(interval) ? $"&interval={interval}" : "")}" +
+                      $"{(indicators != null ? $"&indicators={string.Join(",", indicators)}" : "")}" +
+                      $"{(!string.IsNullOrWhiteSpace(frequencyType) ? $"&frequencyType={frequencyType}" : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<Chart>(json);
+        }
+
         #endregion
     }
 }
