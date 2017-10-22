@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Globalization
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -43,8 +44,59 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab-keydata">
-                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
-                    Key Data
+                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2" style="margin-top: 20px;">
+                    <table id="keydata1" class="col-md-6 col-lg-6">
+                        <tr>
+                            <td>Previous close</td>
+                            <td>@ViewBag.Quote.PreviousClose</td>
+                        </tr>
+                        <tr>
+                            <td>Open</td>
+                            <td>@ViewBag.Quote.Open</td>
+                        </tr>
+                        <tr>
+                            <td>Day's Range</td>
+                            <td>@ViewBag.Quote.Low - @ViewBag.Quote.High</td>
+                        </tr>
+                        <tr>
+                            <td>52 Week Range</td>
+                            <td>@ViewBag.Quote.FiftyTwoWkLow - @ViewBag.Quote.FiftyTwoWkHigh</td>
+                        </tr>
+                        <tr>
+                            <td>Volume</td>
+                            <td>@ViewBag.Quote.Volume</td>
+                        </tr>
+                        <tr>
+                            <td>Avg. Volume</td>
+                            <td>@ViewBag.Quote.AvgVolume</td>
+                        </tr>
+                    </table>
+                    <table id="keydata2" class="col-md-6 col-lg-6">
+                        <tr>
+                            <td>Market Cap</td>
+                            <td>@ViewBag.FinancialHighlight.MarketCapitalization.ToString("0,,.#B", CultureInfo.InvariantCulture)</td>
+                        </tr>
+                        <tr>
+                            <td>Beta</td>
+                            <td>@ViewBag.FinancialHighlight.Beta</td>
+                        </tr>
+                        <tr>
+                            <td>PE Ratio (TTM)</td>
+                            <td>@ViewBag.FinancialHighlight.PeRatio</td>
+                        </tr>
+                        <tr>
+                            <td>EPS (TTM)</td>
+                            <td>@ViewBag.FinancialHighlight.TtmEps</td>
+                        </tr>
+                        <tr>
+                            <td>Ex-Dividend Date</td>
+                            <td>@ViewBag.Estimate.ExDividendDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                        <tr>
+                            <td>Dividend Rate</td>
+                            <td>@ViewBag.Estimate.DividendRate</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="tab-pane fade" id="tab-profile">
