@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,6 +19,7 @@ namespace UX2017.Controllers
         {
             var news = (await _barchartClient.GetNews("AAPL")).ElementAt(0);
             ViewBag.News = new NewsArticle(news.NewsID, news.Headline, news.FullText, news.LargeImageUrl);
+            ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
             return View("News");
         }
 
@@ -34,12 +34,14 @@ namespace UX2017.Controllers
         public async Task<ActionResult> EarningsNews(string symbol = "AAPL")
         {
             ViewBag.News = await _newsGenerator.GetEarningsSummary(symbol);
+            ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
             return View("News");
         }
 
         public async Task<ActionResult> DividendsAnnouncement(string symbol = "AAPL")
         {
             ViewBag.News = await _newsGenerator.GetDividendAnnouncement(symbol);
+            ViewBag.RelatedStocks = await _barchartClient.GetQuote(_symbols);
             return View("News");
         }
     }
