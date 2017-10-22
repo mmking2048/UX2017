@@ -1,17 +1,23 @@
-﻿<div class="row">
-    <div class="col-md-3 col-lg-3"><b>Symbol</b></div>
-    <div class="col-md-3 col-lg-3"><b>Net Change</b></div>
-    <div class="col-md-3 col-lg-3"><b>% Change</b></div>
-</div>
-
-@if (ViewBag.RelatedStocks != null)
+﻿@if (ViewBag.RelatedStocks != null)
 {
+    <div class="row">
+        <div class="col-md-4 col-lg-4"><b>Symbol</b></div>
+        <div class="col-md-4 col-lg-4"><b>Net Change</b></div>
+        <div class="col-md-4 col-lg-4"><b>% Change</b></div>
+    </div>
+
     foreach (var stock in ViewBag.RelatedStocks)
     {
         <div class="row">
-            <div class="col-md-3 col-lg-3">@stock.Symbol</div>
-            <div class="col-md-3 col-lg-3 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">@stock.NetChange</div>
-            <div class="col-md-3 col-lg-3 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">@stock.PercentChange</div>
+            <div class="col-md-4 col-lg-4">@stock.Symbol</div>
+            <div class="col-md-4 col-lg-4 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">
+                @stock.NetChange
+                <span class="glyphicon @(stock.NetChange > 0 ? "glyphicon-triangle-top" : stock.NetChange < 0 ? "glyphicon-triangle-bottom" : "")"></span>
+            </div>
+            <div class="col-md-4 col-lg-4 @(stock.NetChange > 0 ? "green" : stock.NetChange < 0 ? "red" : "")">
+                @stock.PercentChange
+                <span class="glyphicon @(stock.NetChange > 0 ? "glyphicon-triangle-top" : stock.NetChange < 0 ? "glyphicon-triangle-bottom" : "")"></span>
+            </div>
         </div>
     }
 }
