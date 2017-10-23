@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -46,12 +47,16 @@ namespace UX2017.Controllers
                 .Take(3)
                 .Select(n => new NewsArticle(n.NewsID, n.Headline, n.Preview));
 
+            var oneDayVolumeChange = (float)quote.Volume / quote.AvgVolume.Value - 1;
+            var fiveDayVolumeChange = (float) quote.AverageWeeklyVolume.Value / quote.AvgVolume.Value - 1;
+            var earningsChange = (float) earning.Value / estimate.AverageEstimate - 1;
+
             var addition = $"<h4>About {profile.ExchangeName}</h4>" +
-                           $"<ul><li>{symbol} closed at ${quote.Close}, up {quote.PercentChange}% from last trading day close of ${quote.PreviousClose}.</li>" +
-                           $"<li>{symbol} had a volume of {quote.Volume}, 77.67% below <Calculation> the year-to day volume of {quote.AvgVolume}." +
-                           $" The average volume over the last five days ({quote.AverageWeeklyVolume}) is down 74.10% <Calculation>compared to the average.</li>" +
-                           $"<li>{symbol} has changed {technical.PriceChangeYtd}% since the start of the year.</li>" +
-                           $"<li>{symbol} earning {earning.Value} is XXX% <Calculation> than {estimate.AverageEstimate} as estimated.</li>" +
+                           $"<ul><li>{symbol} closed at ${quote.Close}, a {quote.PercentChange}% change from last trading day close of ${quote.PreviousClose}.</li>" +
+                           $"<li>{symbol} had a volume of {quote.Volume}, {Math.Abs(oneDayVolumeChange) : 0.##}% {(oneDayVolumeChange > 0 ? "above" : "below")} the year-to day volume of {quote.AvgVolume}." +
+                           $" The average volume over the last five days ({quote.AverageWeeklyVolume}) is {(fiveDayVolumeChange > 0 ? "up" : "down")} {Math.Abs(fiveDayVolumeChange): 0.##}% compared to the average.</li>" +
+                           $"<li>{symbol} has {(technical.PriceChangeYtd > 0 ? "increased" : "decreased")} {Math.Abs(technical.PriceChangeYtd.Value)}% since the start of the year.</li>" +
+                           $"<li>{symbol} earnings of {earning.Value} is {Math.Abs(earningsChange) : 0.##}% {(earningsChange > 0 ? "higher" : "lower")} than {estimate.AverageEstimate} as estimated.</li>" +
                            $"{(dividend != null ? $"<li>{symbol} last dividend was {dividend.Value}.</li></ul>" : "")}";
 
             article.Body += addition;
