@@ -30,10 +30,10 @@ namespace UX2017
                 {
                     "qtrOneEarnings", "qtrOneEarningsDate", "qtrTwoEarnings", "qtrTwoEarningsDate",
                     "qtrThreeEarnings", "qtrThreeEarningsDate", "qtrFourEarnings", "qtrFourEarningsDate"
-                })).ElementAt(0);
+                })).FirstOrDefault();
             var chart = await _barchartClient.GetChart(symbol);
             var earnings = await _barchartClient.GetCorporateActions(new[] { symbol }, null, null, EventType.earnings);
-            var earning = earnings.ElementAt(0);
+            var earning = earnings.FirstOrDefault();
             var estimate = await _barchartClient.GetEarningsEstimates(new[] {symbol});
             var qtrEstimate = estimate.FirstOrDefault(x => x.Period.Contains("Qtr"));
 
@@ -72,12 +72,12 @@ namespace UX2017
                 new[] {"dividendType", "declarationDate", "paymentDate"});
             var currentEstimate = estimate.FirstOrDefault(x => x.PaymentDate != null);
 
-            var headline = $"{profile.ExchangeName} announces dividends of {dividends.ElementAt(0).Value}";
+            var headline = $"{profile.ExchangeName} announces dividends of {dividends.FirstOrDefault().Value}";
             var body = $"{profile.ExchangeName} (<a href=\"{_companyUrl + profile.Symbol}\">{profile.Exchange}:{profile.Symbol}</a>)" +
                           $" announced on {currentEstimate.DeclarationDate.Value.DayOfWeek}, {currentEstimate.DeclarationDate.Value: MMMM dd}" +
-                          $" dividends of {dividends.ElementAt(0).Value} to be paid as {currentEstimate.DividendType.ToLower()} on" +
+                          $" dividends of {dividends.FirstOrDefault().Value} to be paid as {currentEstimate.DividendType.ToLower()} on" +
                           $" {currentEstimate.PaymentDate.Value.DayOfWeek}, {currentEstimate.PaymentDate.Value: MMMM dd}. Earnings this quarter was" +
-                          $" {earning.ElementAt(0).Value}, compared to last quarters {earning.ElementAt(1).Value}.";
+                          $" {earning.FirstOrDefault().Value}, compared to last quarters {earning.ElementAt(1).Value}.";
 
             return new NewsArticle(headline, body, chart.ImageUrl);
         }

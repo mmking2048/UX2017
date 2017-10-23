@@ -74,7 +74,12 @@
                     <table id="keydata2" class="col-md-6 col-lg-6">
                         <tr>
                             <td>Market Cap</td>
-                            <td>@ViewBag.FinancialHighlight.MarketCapitalization.ToString("0,,.#B", CultureInfo.InvariantCulture)</td>
+                            <td>
+                                @if (ViewBag.FinancialHighlight.MarketCapitalization != null)
+                                {
+                                    @ViewBag.FinancialHighlight.MarketCapitalization.ToString("0,,.#B", CultureInfo.InvariantCulture)
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td>Beta</td>
@@ -90,7 +95,12 @@
                         </tr>
                         <tr>
                             <td>Ex-Dividend Date</td>
-                            <td>@ViewBag.Estimate.ExDividendDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (ViewBag.Estimate.ExDividendDate != null)
+                                {
+                                    @ViewBag.Estimate.ExDividendDate.ToString("yyyy-MM-dd")
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td>Dividend Rate</td>

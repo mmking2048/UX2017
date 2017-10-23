@@ -102,6 +102,17 @@ namespace UX2017Tests
 
         #endregion
 
+        #region ChartsAndAnalytics
+
+        [TestMethod]
+        public void GetTechnicals()
+        {
+            var technical = _barchartClient.GetTechnicals(_symbol).Result;
+            Assert.AreEqual(technical.Symbol, _symbol);
+        }
+
+        #endregion
+
         [TestCleanup]
         public void TestCleanup()
         {

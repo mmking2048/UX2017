@@ -124,6 +124,7 @@ namespace UX2017
         #region ChartsAndAnalytics
 
         Task<Chart> GetChart(string symbol);
+        Task<Technical> GetTechnicals(string symbol);
 
         Task<IEnumerable<Chart>> GetChart(
             IEnumerable<string> symbols,
@@ -135,6 +136,10 @@ namespace UX2017
             string interval = "",
             IEnumerable<string> indicators = null,
             string frequencyType = "");
+
+        Task<IEnumerable<Technical>> GetTechnicals(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null);
 
         #endregion
     }
@@ -156,7 +161,7 @@ namespace UX2017
 
         public async Task<News> GetNews(int storyID)
         {
-            return (await GetNews(new[] { "AP" }, storyID: storyID, fields: new[] { "largeImageURL" })).ElementAt(0);
+            return (await GetNews(new[] { "AP" }, storyID: storyID, fields: new[] { "largeImageURL" }))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<News>> GetNews(string symbol)
@@ -206,7 +211,7 @@ namespace UX2017
 
         public async Task<Quote> GetQuote(string symbol)
         {
-            return (await GetQuote(new[] {symbol}, new[] {"R"})).ElementAt(0);
+            return (await GetQuote(new[] {symbol}, new[] {"R"}))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<Quote>> GetQuote(IEnumerable<string> symbols)
@@ -216,7 +221,7 @@ namespace UX2017
 
         public async Task<QuoteEod> GetQuoteEod(string symbol)
         {
-            return (await GetQuoteEod(new[] {symbol})).ElementAt(0);
+            return (await GetQuoteEod(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<Quote>> GetQuote(
@@ -249,32 +254,32 @@ namespace UX2017
 
         public async Task<Profile> GetProfiles(string symbol)
         {
-            return (await GetProfiles(new[] {symbol})).ElementAt(0);
+            return (await GetProfiles(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<FinancialHighlight> GetFinancialHighlights(string symbol)
         {
-            return (await GetFinancialHighlights(new[] {symbol})).ElementAt(0);
+            return (await GetFinancialHighlights(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<FinancialRatio> GetFinancialRatios(string symbol)
         {
-            return (await GetFinancialRatios(new[] {symbol})).ElementAt(0);
+            return (await GetFinancialRatios(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<IncomeStatement> GetIncomeStatements(string symbol, Frequency frequency)
         {
-            return (await GetIncomeStatements(new[] {symbol}, frequency)).ElementAt(0);
+            return (await GetIncomeStatements(new[] {symbol}, frequency))?.ElementAt(0);
         }
 
         public async Task<BalanceSheet> GetBalanceSheets(string symbol, Frequency frequency)
         {
-            return (await GetBalanceSheets(new[] {symbol}, frequency)).ElementAt(0);
+            return (await GetBalanceSheets(new[] {symbol}, frequency))?.ElementAt(0);
         }
 
         public async Task<CashFlow> GetCashFlows(string symbol)
         {
-            return (await GetCashFlows(new[] {symbol})).ElementAt(0);
+            return (await GetCashFlows(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<Profile>> GetProfiles(
@@ -382,12 +387,13 @@ namespace UX2017
 
         public async Task<CorporateAction> GetCorporateActions(string symbol, EventType eventType)
         {
-            return (await GetCorporateActions(new[] {symbol}, null, null, eventType)).ElementAt(0);
+            var corporateActions = await GetCorporateActions(new[] {symbol}, null, null, eventType);
+            return corporateActions?.ElementAt(0);
         }
 
         public async Task<EarningsEstimate> GetEarningsEstimates(string symbol)
         {
-            return (await GetEarningsEstimates(new[] {symbol})).ElementAt(0);
+            return (await GetEarningsEstimates(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<CorporateAction>> GetCorporateActions(
@@ -423,7 +429,12 @@ namespace UX2017
 
         public async Task<Chart> GetChart(string symbol)
         {
-            return (await GetChart(new[] {symbol})).ElementAt(0);
+            return (await GetChart(new[] {symbol}))?.ElementAt(0);
+        }
+
+        public async Task<Technical> GetTechnicals(string symbol)
+        {
+            return (await GetTechnicals(new[] {symbol}))?.ElementAt(0);
         }
 
         public async Task<IEnumerable<Chart>> GetChart(
@@ -449,6 +460,17 @@ namespace UX2017
                       $"{(!string.IsNullOrWhiteSpace(frequencyType) ? $"&frequencyType={frequencyType}" : "")}";
             var json = await _httpClient.GetStringAsync(url);
             return _jsonParser.Parse<Chart>(json);
+        }
+
+        public async Task<IEnumerable<Technical>> GetTechnicals(
+            IEnumerable<string> symbols,
+            IEnumerable<string> fields = null)
+        {
+            var url = BaseUrl + $"getTechnicals.json?apikey={ApiKey}" +
+                      $"&symbols={string.Join(",", symbols)}" +
+                      $"{(fields != null ? $"&fields={string.Join(",", fields)}" : "")}";
+            var json = await _httpClient.GetStringAsync(url);
+            return _jsonParser.Parse<Technical>(json);
         }
 
         #endregion

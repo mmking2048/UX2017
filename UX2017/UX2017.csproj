@@ -149,6 +149,7 @@
     </Compile>
     <Compile Include="IJsonParser.cs" />
     <Compile Include="Models\ChartsAndAnalytics\Chart.cs" />
+    <Compile Include="Models\ChartsAndAnalytics\Technical.cs" />
     <Compile Include="Models\NewsAndFilings\News.cs" />
     <Compile Include="Models\NewsArticle.cs" />
     <Compile Include="Models\PriceData\Quote.cs" />
