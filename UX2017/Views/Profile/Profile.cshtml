@@ -131,8 +131,36 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="tab-earnings">
-                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2">
-                    Earnings
+                <div class="col-md-8 col-md-offset-2 col-lg-8 col-md-offset-2" style="margin-top: 20px;">
+                        @if (ViewBag.Earnings != null)
+                        {
+                            <table id="earnings" class="col-md-12 col-lg-12">
+                                <tr>
+                                    <th><b>Date</b></th>
+                                    <th><b>Earnings</b></th>
+                                    <th><b>Dividends</b></th>
+                                </tr>
+                                @foreach (var earnings in ViewBag.Earnings)
+                                {
+                                <tr>
+                                    <td>@earnings.Earnings.EventDate.ToString("MM/dd/yy")</td>
+                                    <td>
+                                        @if (earnings.Earnings != null)
+                                        {
+                                            @earnings.Earnings.Value.ToString("F")
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (earnings.Dividends != null)
+                                        {
+                                            @earnings.Dividends.Value.ToString("F")
+                                        }
+                                    </td>
+                                </tr>
+                                }
+                            </table>
+                        }
+                            
                 </div>
             </div>
         </div>
