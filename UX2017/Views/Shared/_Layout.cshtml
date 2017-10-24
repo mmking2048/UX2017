@@ -18,22 +18,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("News", "News", "Home", new { symbol = "AAPL" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Earnings", "EarningsNews", "News")</li>
-                    <li>@Html.ActionLink("Dividends", "DividendsAnnouncement", "News")</li>
+                    <li>@Html.ActionLink("News", "News", "Home", new { symbol = "AAPL" }, new {})</li>
+                    <li>@Html.ActionLink("Profile", "GetProfile", "Profile", new {symbol = "AAPL"}, new {})</li>
+                    @*<li>@Html.ActionLink("Earnings", "EarningsNews", "News")</li>
+                    <li>@Html.ActionLink("Dividends", "DividendsAnnouncement", "News")</li>*@
                 </ul>
             </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
-        @*<hr />
+        <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - News Generator</p>
-        </footer>*@
+        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
