@@ -22,14 +22,21 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("News", "News", "Home", new { symbol = "AAPL" }, new {})</li>
-                    <li>@Html.ActionLink("Profile", "GetProfile", "Profile", new {symbol = "AAPL"}, new {})</li>
+                    @*<li>@Html.ActionLink("News", "News", "Home", new { symbol = "AAPL" }, new {})</li>*@
+                    <script>
+                    sessionStorage.setItem("symbol", "AAPL")
+                    document.getElementByID("searchInput").value = sessionStorage.getItem("symbol");
+                    </script>
+
+                    <li>@Html.ActionLink("News", "News", "Home", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li>
+                    <li>@Html.ActionLink("Profile", "GetProfile", "Profile", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li>
+
+                    @* Search Box*@
+                    <li><input type="search" name="SearchInput" id="searchInput" /></li>
+                    @*<li>@Html.ActionLink("Search", "News", "Home", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li> *@
                     @*<li>@Html.ActionLink("Earnings", "EarningsNews", "News")</li>
                     <li>@Html.ActionLink("Dividends", "DividendsAnnouncement", "News")</li>*@
                 </ul>
-            </div>
-            <div>
-                @* TODO: Add search textbox here. Redirect on enter to Home/News?symbol *@
             </div>
         </div>
     </div>
