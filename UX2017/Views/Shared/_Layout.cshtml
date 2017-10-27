@@ -24,18 +24,18 @@
                 <ul class="nav navbar-nav">
                     @*<li>@Html.ActionLink("News", "News", "Home", new { symbol = "AAPL" }, new {})</li>*@
                     <script>
-                    sessionStorage.setItem("symbol", "AAPL")
-                    document.getElementByID("searchInput").value = sessionStorage.getItem("symbol");
+                        sessionStorage.setItem("symbol", "AAPL")
+                        document.getElementByID("searchInput").value = sessionStorage.getItem("symbol");
                     </script>
 
                     <li>@Html.ActionLink("News", "News", "Home", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li>
                     <li>@Html.ActionLink("Profile", "GetProfile", "Profile", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li>
 
                     @* Search Box*@
-                    <li><input type="search" name="SearchInput" id="searchInput" /></li>
                     @*<li>@Html.ActionLink("Search", "News", "Home", null, new { onclick = "this.href += '?symbol=' + document.getElementById('searchInput').value;" })</li> *@
                     @*<li>@Html.ActionLink("Earnings", "EarningsNews", "News")</li>
                     <li>@Html.ActionLink("Dividends", "DividendsAnnouncement", "News")</li>*@
+                    <li class="pull-right"><input class="form-control" type="search" name="SearchInput" id="searchInput" style="margin-top: 8px;" /></li>
                 </ul>
             </div>
         </div>
