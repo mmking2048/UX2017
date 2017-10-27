@@ -39,7 +39,7 @@ namespace UX2017
             var earningsChange = (float)earning.Value / estimate.AverageEstimate - 1;
 
             return $"<h4>About {profile.ExchangeName}</h4>" +
-                   $"<ul><li>{symbol} closed at ${quote.Close}, a {quote.PercentChange}% change from last trading day close of ${quote.PreviousClose}.</li>" +
+                   $"<ul><li>{symbol} is at ${quote.LastPrice}, a {quote.PercentChange}% change from last trading day close of ${quote.PreviousClose}.</li>" +
                    $"<li>{symbol} had a volume of {quote.Volume}, {Math.Abs(oneDayVolumeChange): 0.##}% {(oneDayVolumeChange > 0 ? "above" : "below")} the year-to day volume of {quote.AvgVolume}." +
                    $" The average volume over the last five days ({quote.AverageWeeklyVolume}) is {(fiveDayVolumeChange > 0 ? "up" : "down")} {Math.Abs(fiveDayVolumeChange): 0.##}% compared to the average.</li>" +
                    $"<li>{symbol} has {(technical.PriceChangeYtd > 0 ? "increased" : "decreased")} {Math.Abs(technical.PriceChangeYtd.Value)}% since the start of the year.</li>" +

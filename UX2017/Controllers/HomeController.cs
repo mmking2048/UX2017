@@ -11,6 +11,8 @@ namespace UX2017.Controllers
         private readonly IBarchartClient _barchartClient =
             new BarchartClient(new HttpClient(), new JsonParser());
 
+        private readonly ITextRazorClient _textRazorClient = new TextRazorClient(new HttpClient());
+
         private readonly string _symbol = "AAPL";
 
         public async Task<ActionResult> Index()
