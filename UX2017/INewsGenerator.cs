@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UX2017.Models;
 
@@ -6,6 +7,7 @@ namespace UX2017
 {
     public interface INewsGenerator
     {
+        Task<string> GetFinancialSummary(string symbol);
         Task<NewsArticle> GetEarningsSummary(string symbol);
         Task<NewsArticle> GetDividendAnnouncement(string symbol);
     }
@@ -20,10 +22,34 @@ namespace UX2017
             _barchartClient = barchartClient;
         }
 
+        public async Task<string> GetFinancialSummary(string symbol)
+        {
+            var profile = await _barchartClient.GetProfiles(symbol);
+            var quote = (await _barchartClient.GetQuote(new[] { symbol }, new[] { "D" },
+                    new[] { "previousClose", "avgVolume", "averageWeeklyVolume" }))
+                ?.ElementAt(0);
+            var technical = (await _barchartClient.GetTechnicals(new[] { symbol },
+                new[] { "priceChangeYTD" }))?.ElementAt(0);
+            var earning = await _barchartClient.GetCorporateActions(symbol, EventType.earnings);
+            var dividend = await _barchartClient.GetCorporateActions(symbol, EventType.dividend);
+            var estimate = await _barchartClient.GetEarningsEstimates(symbol);
+
+            var oneDayVolumeChange = (float)quote.Volume / quote.AvgVolume.Value - 1;
+            var fiveDayVolumeChange = (float)quote.AverageWeeklyVolume.Value / quote.AvgVolume.Value - 1;
+            var earningsChange = (float)earning.Value / estimate.AverageEstimate - 1;
+
+            return $"<h4>About {profile.ExchangeName}</h4>" +
+                   $"<ul><li>{symbol} closed at ${quote.Close}, a {quote.PercentChange}% change from last trading day close of ${quote.PreviousClose}.</li>" +
+                   $"<li>{symbol} had a volume of {quote.Volume}, {Math.Abs(oneDayVolumeChange): 0.##}% {(oneDayVolumeChange > 0 ? "above" : "below")} the year-to day volume of {quote.AvgVolume}." +
+                   $" The average volume over the last five days ({quote.AverageWeeklyVolume}) is {(fiveDayVolumeChange > 0 ? "up" : "down")} {Math.Abs(fiveDayVolumeChange): 0.##}% compared to the average.</li>" +
+                   $"<li>{symbol} has {(technical.PriceChangeYtd > 0 ? "increased" : "decreased")} {Math.Abs(technical.PriceChangeYtd.Value)}% since the start of the year.</li>" +
+                   $"<li>{symbol} earnings of {earning.Value} is {Math.Abs(earningsChange): 0.##}% {(earningsChange > 0 ? "higher" : "lower")} than {estimate.AverageEstimate} as estimated.</li>" +
+                   $"{(dividend != null ? $"<li>{symbol} last dividend was {dividend.Value}.</li></ul>" : "")}";
+        }
+
         public async Task<NewsArticle> GetEarningsSummary(string symbol)
         {
             string headline;
-            string body;
 
             var profile = (await _barchartClient.GetProfiles(new []{symbol},
                 new []
@@ -54,10 +80,10 @@ namespace UX2017
                 headline = $"{profile.ExchangeName} reports fourth quarter earnings of {profile.QtrFourEarnings}";
             }
 
-            body = $"{profile.ExchangeName} (<a href=\"{_companyUrl + profile.Symbol}\">{profile.Exchange}:{profile.Symbol}</a>)" +
-                   $" reported on {earning.EventDate.DayOfWeek}, {earning.EventDate : MMMM dd} earnings of {earning.Value}." +
-                   $"Last quarter's earnings was {earnings.ElementAt(1).Value}. Next" +
-                   $" quarter earnings are projected to be {qtrEstimate.AverageEstimate}.";
+            var body = $"{profile.ExchangeName} (<a href=\"{_companyUrl + profile.Symbol}\">{profile.Exchange}:{profile.Symbol}</a>)" +
+                          $" reported on {earning.EventDate.DayOfWeek}, {earning.EventDate : MMMM dd} earnings of {earning.Value}." +
+                          $"Last quarter's earnings was {earnings.ElementAt(1).Value}. Next" +
+                          $" quarter earnings are projected to be {qtrEstimate.AverageEstimate}.";
 
             return new NewsArticle(headline, body, chart.ImageUrl);
         }
